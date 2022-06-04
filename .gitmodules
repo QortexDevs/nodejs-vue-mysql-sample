@@ -1,0 +1,6 @@
+[submodule "node-express-mysql"]
+	path = node-express-mysql
+	url = git@github.com:QortexDevs/node-express-mysql.git
+[submodule "nodejs-vue-frontend-sample"]
+	path = nodejs-vue-frontend-sample
+	url = git@github.com:NickMitin/nodejs-vue-frontend-sample.git

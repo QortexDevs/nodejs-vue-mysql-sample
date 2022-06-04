@@ -1,0 +1,65 @@
+version: "3.8"
+
+services:
+  backend:
+    image: qortex-tutorial-backend
+    build: ./node-express-mysql
+    container_name: qortex-tutorial-backend
+    environment:
+      DB_HOST: db
+      DB_USER: homestead
+      DB_PASSWORD: homestead
+      DB_NAME: homestead
+    volumes:
+      - ./node-express-mysql/src:/app/src
+    ports:
+      - "3031:3000"
+    depends_on:
+      - db
+    networks:
+      - qortex-tutorial
+
+  db:
+    image: mysql:8.0.29
+    platform: linux/amd64
+    container_name: qortex-tutorial-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
+      MYSQL_PASSWORD: homestead
+      MYSQL_ROOT_HOST: '%'
+    security_opt:
+      - seccomp:unconfined
+    volumes:
+      - database:/var/lib/mysql
+    networks:
+      - qortex-tutorial
+
+  adminer:
+    image: adminer
+    container_name: qortex-tutorial-adminer
+    ports:
+      - 8031:8080
+    depends_on:
+      - db
+    networks:
+      - qortex-tutorial
+
+  frontend:
+    image: qortex-tutorial-frontend
+    build: ./nodejs-vue-frontend-sample
+    container_name: qortex-tutorial-frontend
+    volumes:
+      - ./nodejs-vue-frontend-sample:/app/src
+    ports:
+      - "3000:3000"
+    networks:
+      - qortex-tutorial
+
+networks:
+  qortex-tutorial:
+
+
+volumes:
+  database:
